@@ -3,7 +3,16 @@ const app = express();
 const path = require('path');
 const appRouter = require('./src/routes/appRoutes');
 const userRouter = require('./src/routes/userRoutes')
+const mongoose = require("mongoose");
 
+mongoose.connect('mongodb://localhost:27017/echoverse')
+    .then(() => {
+        console.log("MonoDb connection is successful!");
+    })
+    .catch(err => {
+        console.log("Database connection error occured!");
+        console.log(err);
+    });
 // Port configuration
 const port = 3000;
 
