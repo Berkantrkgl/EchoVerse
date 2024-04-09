@@ -1,9 +1,30 @@
 body {
+    position: relative;
+    margin: 0;
+    padding: 0;
     font-family: Arial, sans-serif;
     font-size: 16px;
     color: #333;
+    background-color:  #F2F2F2;
+    min-height: 100vh;
+    bottom: 8vh;
 }
 
-body {
-    background-color:  #F2F2F2;
+
+  /* Başlangıçta formu gizle */
+#input-box {
+    position: fixed; 
+    bottom: 150px; 
+    left: 50%; 
+    transform: translateX(-50%); /* Kendi ekseninde yarı yarıya sola kaydır */
+    width: 25%; /* Genişlik */
 }
+
+/* Ekstra stil */
+.border {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
