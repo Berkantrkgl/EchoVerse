@@ -13,9 +13,26 @@
         </section>
 
         <section id="content">
+
+            <div class="container word-grid">
+                <% words.forEach(element => { %>
+                    <div class="card m-2">
+                        <div class="card-body d-flex align-items-center justify-content-center">
+                          <%- element.en_word %> <br>
+                          ------- <br>
+                          <%- element.tr_word %>
+                        </div>
+                    </div>
+                <% }) %> 
+            </div>
+            
+            
+
+
+
             <div class="container d-flex align-items-end justify-content-center" style="height: 80vh;">
                 <div class="border d-none" id="input-box"> <!-- Bootstrap 'd-none' sınıfı ile başlangıçta gizli -->
-                    <form class="d-flex flex-column row align-items-center">
+                    <form action="/new" class="d-flex flex-column row align-items-center" method="POST">
                         <label class="col-6 text-center mb-4 border-bottom" for="word_en">Enter the Word</label>
                         <div class="col-11 text-center">
                             <input class=" my-2"  type="text" id="word_en" placeholder="English Word" name="word_en">

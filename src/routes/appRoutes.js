@@ -4,23 +4,18 @@ const Word = require("../models/words");
 
 // Base index for app. 
 router.get('/', async (req, res) => {
-    res.render("home");
+    var words = await Word.find({ is_active: true});
+    res.render("home", { words: words });
 })
 
 router.post('/new', async (req, res) => {
-    await Word.insertMany([
-        {en_word:'Hello', tr_word:'Merhaba'},
-        {en_word:'hi', tr_word:'Merhaba'},
-        {en_word:'CAr', tr_word:'Araba'}
-    ])
-    .then(data => {
-        console.log("it worked");
-	    console.log(data);
+    var { word_en } = req.body;
+    var newWord = new Word({
+        en_word: word_en,
+        tr_word: 'Merhaba',
     })
-    .catch(err => {
-        console.log(err)
-    })
-    res.send("POST - Entering new word");
+    newWord.save();
+    res.redirect('/');
 });
 
 router.post('/check', (req, res) => {
