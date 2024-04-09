@@ -1,12 +1,25 @@
 const express = require('express');
 const router = express.Router();
+const Word = require("../models/words");
 
 // Base index for app. 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     res.render("home");
 })
 
-router.post('/new', (req, res) => {
+router.post('/new', async (req, res) => {
+    await Word.insertMany([
+        {en_word:'Hello', tr_word:'Merhaba'},
+        {en_word:'hi', tr_word:'Merhaba'},
+        {en_word:'CAr', tr_word:'Araba'}
+    ])
+    .then(data => {
+        console.log("it worked");
+	    console.log(data);
+    })
+    .catch(err => {
+        console.log(err)
+    })
     res.send("POST - Entering new word");
 });
 
