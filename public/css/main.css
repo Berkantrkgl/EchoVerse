@@ -4,7 +4,7 @@ body {
     font-family: Arial, sans-serif;
     font-size: 16px;
     color: #333;
-    background-color:  #F2F2F2;
+    background-color:  #F3EEEA;
 }
 
 
@@ -25,12 +25,21 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.word-grid {
-    background-color: aquamarine;
-    height: 100vh;
+.wrapper {
     display: grid;
-    gap: 2rem;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
+    height: 94vh;
+    gap: 10px;
+    grid-template-columns: repeat(5,  0.5fr);
+    grid-template-rows: repeat(4,  0.5fr) 0.3fr;
+}
+
+.plus-button-grid {
+    grid-column: 1 / 6;
+    grid-row: 5 / 6;
+}
+
+.grid-placement {
+    grid-column: 1;
+    grid-row: 1;
 }
 
