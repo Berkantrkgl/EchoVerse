@@ -16,12 +16,11 @@
             <div class="container wrapper">
                 <% words.forEach(element => { %>
                     <div class="card m-2 grid-placement">
-                        <div class="card-body d-flex flex-column">
-                          <%- element.en_word %>
+                        <div class="card-body d-flex flex-column align-items-center text-center">
+                          <span class="py-2 fw-bold border-3 border-bottom"><%- element.en_word %></span>
                             <form action="/check" class="pt-3" method="POST">
-                                <label for="word">Enter the Word</label>
                                 <div class="d-flex">
-                                    <input class="" type="text" id="word" placeholder="English Word" name="check_word">
+                                    <input class="" type="text" id="word" placeholder="Enter meaning" name="check_word" size="15">
                                     <button type="submit">Add</button>
                                 </div>
                             </form>
