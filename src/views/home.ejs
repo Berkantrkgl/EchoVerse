@@ -13,14 +13,18 @@
         </section>
 
         <section id="content">
-
             <div class="container wrapper">
                 <% words.forEach(element => { %>
                     <div class="card m-2 grid-placement">
-                        <div class="card-body d-flex align-items-center justify-content-center">
-                          <%- element.en_word %> <br>
-                          ------- <br>
-                          <%- element.tr_word %>
+                        <div class="card-body d-flex flex-column">
+                          <%- element.en_word %>
+                            <form action="/check" class="pt-3" method="POST">
+                                <label for="word">Enter the Word</label>
+                                <div class="d-flex">
+                                    <input class="" type="text" id="word" placeholder="English Word" name="check_word">
+                                    <button type="submit">Add</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 <% }) %> 
@@ -28,9 +32,9 @@
                 <div class="container d-flex align-items-end justify-content-center plus-button-grid">
                     <div class="border d-none" id="input-box"> <!-- Bootstrap 'd-none' sınıfı ile başlangıçta gizli -->
                         <form action="/new" class="d-flex flex-column row align-items-center" method="POST">
-                            <label class="col-6 text-center mb-4 border-bottom" for="word_en">Enter the Word</label>
+                            <label class="col-6 text-center mb-4 border-bottom" for="word">Enter the Word</label>
                             <div class="col-11 text-center">
-                                <input class=" my-2"  type="text" id="word_en" placeholder="English Word" name="word_en">
+                                <input class=" my-2"  type="text" id="word" placeholder="English Word" name="word">
                                 <button type="submit">Add</button>
                             </div>
                         </form>

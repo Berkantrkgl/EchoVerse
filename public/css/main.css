@@ -17,6 +17,10 @@ body {
     width: 25%; /* Genişlik */
 }
 
+#content {
+    font-size: 14px;
+}
+
 /* Ekstra stil */
 .border {
     padding: 20px;
@@ -27,7 +31,7 @@ body {
 
 .wrapper {
     display: grid;
-    height: 94vh;
+    height: 84.5vh;
     gap: 10px;
     grid-template-columns: repeat(5,  0.5fr);
     grid-template-rows: repeat(4,  0.5fr) 0.3fr;
