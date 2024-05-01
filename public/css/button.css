@@ -5,7 +5,7 @@
     height: 20px;
     width: 60px;
     align-items: center;
-    background-color: #fff;
+    background-color: #FAF0E6;
     border-radius: 12px;
     box-shadow: transparent 0 0 0 3px, rgba(18, 18, 18, .1) 0 6px 20px;
     box-sizing: border-box;
@@ -31,5 +31,5 @@
 }
 
 .button-35:hover {
-    box-shadow: #121212 0 0 0 3px, transparent 0 0 0 0;
+    box-shadow: #352F44 0 0 0 3px, transparent 0 0 0 0;
 }

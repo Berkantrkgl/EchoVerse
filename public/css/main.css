@@ -3,11 +3,15 @@ body {
     padding: 0;
     font-family: Arial, sans-serif;
     font-size: 16px;
-    color: #333;
-    background-color:  #F3EEEA;
+    color: #2A2438;
+    background-image: url("../images/back.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-color: #5C5470;
+
+    
 }
-
-
   /* Başlangıçta formu gizle */
 #input-box {
     position: fixed; 
