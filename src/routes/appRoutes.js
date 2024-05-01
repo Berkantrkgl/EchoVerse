@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const Word = require("../models/words");
 
-// Base index for app.
 router.get("/", async (req, res) => {
     try {
         var words = await Word.find({ is_active: true });
@@ -17,7 +16,9 @@ router.post("/new", async (req, res) => {
     try {
         let word = await Word.findOneAndUpdate(
             { en_word: req.body.word },
-            { is_active: true, $inc: { number_of_seen: 1 } }
+            // number of seen property kelimenin anlami dogru bilindikten sonra increment edilecek!
+            // { is_active: true, $inc: { number_of_seen: 1 } }
+            { is_active: true }
         );
         if (word === null) {
             var new_word = new Word({
