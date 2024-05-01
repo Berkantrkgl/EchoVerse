@@ -2,7 +2,7 @@
     <% words.forEach(element=> { %>
         <div class="card word-card m-2 grid-placement">
             <div class="card-body d-flex flex-column align-items-center text-center">
-                <span class="py-2 fw-bold border-3 border-bottom"><%- element.en_word %></span>
+                <h5 class="py-2 fw-bold border-3 border-bottom"><%- element.en_word %></h5>
                 <form action="/check" class="pt-3" method="POST">
                     <div class="d-flex align-items-center">
                         <input class="mx-2 input-filed" type="text" id="word" placeholder="Enter meaning" name="check_word" size="15">
@@ -16,7 +16,7 @@
         <div class="container d-flex align-items-end justify-content-center plus-button-grid">
             <div class="border d-none word-card border-radius-2" id="input-box"> <!-- Bootstrap 'd-none' sınıfı ile başlangıçta gizli -->
                 <form action="/new" class="d-flex flex-column row align-items-center" method="POST">
-                    <label class="col-6 fw-bold text-center mb-4 border-bottom" for="word">Enter the Word</label>
+                    <label class="col-6 fw-bold text-center mb-4 border-bottom" style="font-size: 20px;" for="word">Enter the Word</label>
                     <div class="col-11 text-center d-flex justify-content-around">
                         <input class="mx-2 input-filed w-75" type="text" id="word" placeholder="English Word" name="word">
                         <button type="submit" class="button-35">Add</button>

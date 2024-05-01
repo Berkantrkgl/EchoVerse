@@ -1,5 +1,5 @@
 .input-filed {
-    box-shadow: inset #abacaf 0 0 0 2px;
+    box-shadow: inset #FBF3D5 0 0 0 2px;
     border: 0;
     background: rgba(0, 0, 0, 0);
     appearance: none;
@@ -16,11 +16,11 @@
 }
 
 .input-filed:hover {
-    box-shadow: 0 0 0 0 #FAF0E6 inset, #352F44 0 0 0 2px;
+    box-shadow: 0 0 0 0 #FBF3D5 inset, #FBF3D5 0 0 0 2px;
 }
 
 .input-filed:focus {
-    background: #FAF0E6;
+    background: #FBF3D5;
     outline: 0;
-    box-shadow: 0 0 0 0 #FAF0E6 inset, #352F44 0 0 0 3px;
+    box-shadow: 0 0 0 0 #FBF3D5 inset, #FBF3D5 0 0 0 3px;
 }

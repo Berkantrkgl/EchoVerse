@@ -4,11 +4,11 @@ body {
     font-family: Arial, sans-serif;
     font-size: 16px;
     color: #2A2438;
-    background-image: url("../images/back.png");
+    background-image: url("../images/background-image.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
-    background-color: #5C5470;
+    background-color: #D6DAC8;
 
     
 }
