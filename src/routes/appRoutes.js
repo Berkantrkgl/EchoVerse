@@ -34,8 +34,19 @@ router.post("/new", async (req, res) => {
     }
 });
 
-router.post("/check", (req, res) => {
-    res.send("POST - Checking entered word with db");
+router.post("/check/:wordId", async (req, res) => {
+    const response = req.body.check_word;
+    const word = await Word.findById(req.params.wordId);
+    console.log(word);
+
+    // burada google translate api dan cevap gelecek!
+
+    if (word.en_word === response) {
+        word.is_active = false;
+        await word.save();
+    }
+
+    res.redirect("/");
 });
 
 router.get("/words", (req, res) => {
