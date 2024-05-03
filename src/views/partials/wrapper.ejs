@@ -1,14 +1,26 @@
 <div class="container wrapper">
     <% words.forEach(element=> { %>
         <div class="card word-card m-2 grid-placement">
-            <div class="card-body d-flex flex-column align-items-center text-center">
-                <h5 class="py-2 fw-bold border-3 border-bottom"><%- element.en_word %></h5>
-                <form action="/check/<%= element._id %>" class="pt-3" method="POST">
-                    <div class="d-flex align-items-center">
-                        <input class="mx-2 input-filed" type="text" id="word" placeholder="Enter meaning" name="check_word" size="15">
-                        <button type="submit" class="button-35">Check</button>
+            <div class="card-body text-center">
+                <div class="row">
+                    <div class="col-lg-8 offset-1">
+                        <h6 class="py-2 fw-bold border-3 border-bottom"><%- element.en_word %></h6>
                     </div>
-                </form>
+                    <div class="col-lg-3 ">
+                        <form action="/<%= element._id %>?__method=DELETE" method="POST">
+                            <button type="submit" style="border: none; appearance: none; background-color: inherit;"><img src="/images/cross-icon.png" alt="" style="width: 25px;"></button>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <form action="/check/<%= element._id %>" class="pt-3" method="POST">
+                        <div class="d-flex align-items-center">
+                            <input class="mx-2 input-filed" type="text" id="word" placeholder="Enter meaning" name="check_word"
+                                size="15">
+                            <button type="submit" class="button-35">Check</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     <% }) %>
@@ -18,7 +30,7 @@
                 <form action="/new" class="d-flex flex-column row align-items-center" method="POST">
                     <label class="col-6 fw-bold text-center mb-4 border-bottom" style="font-size: 20px;" for="word">Enter the Word</label>
                     <div class="col-11 text-center d-flex justify-content-around">
-                        <input class="mx-2 input-filed w-75" type="text" id="word" placeholder="English Word" name="word">
+                        <input class="mx-2 input-filed w-75" type="text" id="word" maxlength="15" placeholder="English Word" name="word">
                         <button type="submit" class="button-35">Add</button>
                     </div>
                 </form>

@@ -4,6 +4,7 @@ const path = require("path");
 const appRouter = require("./src/routes/appRoutes");
 const userRouter = require("./src/routes/userRoutes");
 const models = require("./src/models");
+const methodOverride = require("method-override");
 const port = 3000;
 
 // Database connection
@@ -14,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "src/views"));
+app.use(methodOverride("__method"));
 
 // Routing
 app.use("/", appRouter);

@@ -49,6 +49,17 @@ router.post("/check/:wordId", async (req, res) => {
     res.redirect("/");
 });
 
+router.delete("/:wordId", async (req, res) => {
+    try {
+        const word = await Word.findById(req.params.wordId);
+        word.is_active = false;
+        await word.save();
+        res.redirect("/");
+    } catch (e) {
+        console.log("An error occured during word delete operation!");
+    }
+});
+
 router.get("/words", (req, res) => {
     res.render("words");
 });
