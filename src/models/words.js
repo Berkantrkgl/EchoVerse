@@ -2,12 +2,13 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 var wordSchema = new Schema({
-    en_word: { type: String, required: true, lowercase: true },
-    tr_word: { type: String, required: true, lowercase: true },
+    en_word: { type: String, lowercase: true },
+    tr_word: { type: String, lowercase: true },
     //creator: [{ type: Schema.Types.ObjectId, ref: 'User', required: true }],
     entry_date: { type: Date, default: Date.now },
+    question_language: { type: String, default: "en" },
     is_active: { type: Boolean, default: true },
-    number_of_seen: { type: Number, default: 1 },
+    number_of_seen: { type: Number, default: 0 },
 });
 
 var Word = mongoose.model("Word", wordSchema);

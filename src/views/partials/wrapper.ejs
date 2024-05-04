@@ -4,7 +4,14 @@
             <div class="card-body text-center">
                 <div class="row">
                     <div class="col-lg-8 offset-1">
-                        <h6 class="py-2 fw-bold border-3 border-bottom"><%- element.en_word %></h6>
+                        <h6 class="py-2 fw-bold border-3 border-bottom">
+                            <% if (element.question_language === 'tr') { %>
+                                <%= element.tr_word %>
+                            <% } else if (element.question_language) { %>
+                                <%= element.en_word %>
+                            <% } %>
+                    
+                        </h6>
                     </div>
                     <div class="col-lg-3 ">
                         <form action="/<%= element._id %>?__method=DELETE" method="POST">
@@ -25,7 +32,7 @@
         </div>
     <% }) %>
 
-        <div class="container d-flex align-items-end justify-content-center plus-button-grid">
+        <div class="container d-flex align-items-end justify-content-center plus-button-grid">  
             <div class="border d-none word-card border-radius-2" id="input-box"> <!-- Bootstrap 'd-none' sınıfı ile başlangıçta gizli -->
                 <form action="/new" class="d-flex flex-column row align-items-center" method="POST">
                     <label class="col-6 fw-bold text-center mb-4 border-bottom" style="font-size: 20px;" for="word">Enter the Word</label>

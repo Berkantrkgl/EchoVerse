@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Word = require("../models/words");
+const { translateText, detectLanguage } = require("../utils/translate");
 
 router.get("/", async (req, res) => {
     try {
@@ -14,18 +15,50 @@ router.get("/", async (req, res) => {
 
 router.post("/new", async (req, res) => {
     try {
-        let word = await Word.findOneAndUpdate(
-            { en_word: req.body.word },
-            // number of seen property kelimenin anlami dogru bilindikten sonra increment edilecek!
-            // { is_active: true, $inc: { number_of_seen: 1 } }
-            { is_active: true }
-        );
-        if (word === null) {
-            var new_word = new Word({
-                en_word: req.body.word,
-                tr_word: "Google Api Cevabi",
-            });
-            await new_word.save();
+        // Detect language
+        const language_type = await detectLanguage(req.body.word);
+        console.log(language_type);
+
+        if (language_type === "tr") {
+            // Get api translation
+            var en_answer = await translateText(req.body.word, "en");
+            let word = await Word.findOneAndUpdate(
+                { tr_word: req.body.word },
+                { is_active: true, language_type: "tr" }
+            );
+            if (word === null) {
+                var new_word = new Word({
+                    tr_word: req.body.word,
+                    en_word: en_answer,
+                    question_language: "tr",
+                });
+                await new_word.save();
+                console.log(
+                    "Turkce girilen kelime kaydedildi (ingilizce ile beraber!"
+                );
+            }
+        } else if (language_type === "en") {
+            // Get api translation
+            var tr_answer = await translateText(req.body.word, "tr");
+
+            let word = await Word.findOneAndUpdate(
+                { en_word: req.body.word },
+                { is_active: true, language_type: "en" }
+            );
+
+            if (word === null) {
+                var new_word = new Word({
+                    en_word: req.body.word,
+                    tr_word: tr_answer,
+                    question_language: "en",
+                });
+                await new_word.save();
+                console.log(
+                    "Ingilizce girilen kelime karsiligiyla birlikte kaydedildi!"
+                );
+            }
+        } else {
+            console.log("Lutfen turkce ya da ingilizce bir kelime giriniz!");
         }
         res.redirect("/");
     } catch (err) {
@@ -35,18 +68,32 @@ router.post("/new", async (req, res) => {
 });
 
 router.post("/check/:wordId", async (req, res) => {
-    const response = req.body.check_word;
-    const word = await Word.findById(req.params.wordId);
-    console.log(word);
+    try {
+        const response = req.body.check_word;
+        const word = await Word.findById(req.params.wordId);
 
-    // burada google translate api dan cevap gelecek!
-
-    if (word.en_word === response) {
-        word.is_active = false;
-        await word.save();
+        if (word.question_language === "en" && response === word.tr_word) {
+            word.is_active = false;
+            word.number_of_seen += 1;
+            await word.save();
+            console.log("Ingilizce kelimenin turkce karsiligi dogru bilindi!");
+            res.redirect("/");
+        } else if (
+            word.question_language === "tr" &&
+            response === word.en_word
+        ) {
+            word.is_active = false;
+            word.number_of_seen += 1;
+            await word.save();
+            console.log("Turkce kelimenin ingilizce karsiligi dogru bilindi!");
+            res.redirect("/");
+        } else {
+            console.log("yanlis cevap");
+            res.redirect("/");
+        }
+    } catch (e) {
+        console.log("An error occured!", e);
     }
-
-    res.redirect("/");
 });
 
 router.delete("/:wordId", async (req, res) => {
