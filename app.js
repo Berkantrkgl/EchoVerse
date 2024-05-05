@@ -1,10 +1,14 @@
 const express = require("express");
 const app = express();
 const path = require("path");
-const appRouter = require("./src/routes/appRoutes");
-const userRouter = require("./src/routes/userRoutes");
+
 const models = require("./src/models");
 const methodOverride = require("method-override");
+
+const indexRouter = require("./src/routes/index");
+const wordRouter = require("./src/routes/wordsRoutes");
+const userRouter = require("./src/routes/userRoutes");
+const practiceRouter = require("./src/routes/practiceRoutes");
 
 // Send messages to user
 const session = require("express-session");
@@ -33,8 +37,10 @@ app.set("views", path.join(__dirname, "src/views"));
 app.use(methodOverride("__method"));
 
 // Routing
-app.use("/", appRouter);
-app.use("/user", userRouter);
+app.use("/", indexRouter);
+app.use("/words", wordRouter);
+app.use("/practice", practiceRouter);
+app.use("/users", userRouter);
 
 // Flash middleware
 app.use((req, res, next) => {
