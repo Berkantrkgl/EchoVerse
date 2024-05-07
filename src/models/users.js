@@ -7,7 +7,6 @@ var userSchema = Schema({
         required: [true, "User must have a first name!"],
     },
     last_name: { type: String, required: true },
-    user_name: { type: String, required: true },
     e_mail: { type: String, required: true },
     password: { type: String, required: true },
     words: [{ type: Schema.Types.ObjectId, ref: "Word" }],

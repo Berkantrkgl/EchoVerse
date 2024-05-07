@@ -24,7 +24,7 @@ exports.create_word = asyncHandler(async (req, res, next) => {
             var en_answer = await translateText(req.body.word, "en");
             let word = await Word.findOneAndUpdate(
                 { tr_word: req.body.word },
-                { is_active: true, language_type: "tr" }
+                { is_active: true, question_language: "tr" }
             );
             if (word === null) {
                 var new_word = new Word({
@@ -41,7 +41,7 @@ exports.create_word = asyncHandler(async (req, res, next) => {
             var tr_answer = await translateText(req.body.word, "tr");
             let word = await Word.findOneAndUpdate(
                 { en_word: req.body.word },
-                { is_active: true, language_type: "en" }
+                { is_active: true, question_language: "en" }
             );
             if (word === null) {
                 var new_word = new Word({

@@ -6,17 +6,13 @@ router.get("/login", (req, res) => {
     res.render("login");
 });
 
-router.post("/login", (req, res) => {
-    res.send("POST -  Login post endpoint!");
-});
+router.post("/login", userController.login_user);
 
 router.get("/register", (req, res) => {
     res.render("register");
 });
 
-router.post("/register", (req, res) => {
-    res.send("POST - Register post endpoint!");
-});
+router.post("/register", userController.register_user);
 
 router.post("/logout", (req, res) => {
     res.send("POST - Logout endpoint!");
