@@ -56,15 +56,13 @@
         <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
             <div class="row gx-lg-5 align-items-center mb-5">
                 <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
+                    <img src="/images/echoverseLogo.png" alt="" style="width: 100px;">
                     <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
                         The best offer <br />
-                        <span style="color: hsl(218, 81%, 75%)">for your business</span>
+                        <span style="color: hsl(218, 81%, 75%)">word memorization site</span>
                     </h1>
                     <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                        Temporibus, expedita iusto veniam atque, magni tempora mollitia
-                        dolorum consequatur nulla, neque debitis eos reprehenderit quasi
-                        ab ipsum nisi dolorem modi. Quos?
+                        A trick to easily memorize English-Turkish words, and to memorize words from the computer without using paper.
                     </p>
                 </div>
     
@@ -74,7 +72,7 @@
     
                     <div class="card bg-glass">
                         <div class="card-body px-4 py-5 px-md-5">
-                            <form>
+                            <form action="/users/register" method="POST">
                                 <div class="d-flex justify-content-center py-4">
                                     <h2 style="font-weight: bolder;">Register</h2>
                                 </div>
@@ -82,38 +80,32 @@
                                 <div class="row">
                                     <div class="col-md-6 mb-4">
                                         <div data-mdb-input-init class="form-outline">
-                                            <label class="form-label" for="form3Example1">First name</label>
-                                            <input type="text" id="form3Example1" class="form-control" />
+                                            <label class="form-label" for="fName">First name</label>
+                                            <input type="text" id="fName" name="firstName" required class="form-control" />
                                         </div>
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <div data-mdb-input-init class="form-outline">
-                                            <label class="form-label" for="form3Example2">Last name</label>
-                                            <input type="text" id="form3Example2" class="form-control" />
+                                            <label class="form-label" for="lName">Last name</label>
+                                            <input type="text" id="lName" name="lastName" required class="form-control" />
                                         </div>
                                     </div>
-                                </div>
-
-                                <!-- Email input -->
-                                <div data-mdb-input-init class="form-outline mb-4">
-                                    <label class="form-label" for="form3Example3">User name</label>
-                                    <input type="text" id="form3Example3" class="form-control" />
                                 </div>
     
                                 <!-- Email input -->
                                 <div data-mdb-input-init class="form-outline mb-4">
-                                    <label class="form-label" for="form3Example3">Email address</label>
-                                    <input type="email" id="form3Example3" class="form-control" />
+                                    <label class="form-label" for="email">Email address</label>
+                                    <input type="email" id="email" name="email" required class="form-control" />
                                 </div>
     
                                 <!-- Password input -->
                                 <div data-mdb-input-init class="form-outline mb-4">
-                                    <label class="form-label" for="form3Example4">Password</label>
-                                    <input type="password" id="form3Example4" class="form-control" />
+                                    <label class="form-label" for="password">Password</label>
+                                    <input type="password" id="password" name="password" required class="form-control" />
                                 </div>
                                 <div data-mdb-input-init class="form-outline mb-4">
                                     <label class="form-label" for="againPassword">Password Again</label>
-                                    <input type="password" id="againPassword" class="form-control" />
+                                    <input type="password" id="againPassword" name="againPassword" required class="form-control" />
                                 </div>
 
                                 <!-- Submit button -->

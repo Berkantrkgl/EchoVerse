@@ -7,7 +7,7 @@
                         <h6 class="py-2 fw-bold border-3 border-bottom">
                             <% if (element.question_language === 'tr') { %>
                                 <%= element.tr_word %>
-                            <% } else if (element.question_language) { %>
+                            <% } else if (element.question_language === 'en') { %>
                                 <%= element.en_word %>
                             <% } %>
                     
