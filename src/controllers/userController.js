@@ -41,3 +41,8 @@ exports.register_user = asyncHandler(async (req, res, next) => {
         return next(e);
     } 
 })
+
+exports.logout_user = asyncHandler(async (req, res, next) => {
+    req.session.destroy();
+    res.redirect('/users/login')
+})

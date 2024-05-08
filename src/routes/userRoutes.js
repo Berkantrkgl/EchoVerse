@@ -14,8 +14,6 @@ router.get("/register", (req, res) => {
 
 router.post("/register", userController.register_user);
 
-router.post("/logout", (req, res) => {
-    res.send("POST - Logout endpoint!");
-});
+router.post("/logout", userController.logout_user);
 
 module.exports = router;

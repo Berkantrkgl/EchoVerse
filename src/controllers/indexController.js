@@ -1,4 +1,5 @@
 const Word = require("../models/words");
+const User = require('../models/users');
 const asyncHandler = require("express-async-handler");
 
 // For using google translate api
@@ -7,8 +8,10 @@ const { translateText, detectLanguage } = require("../utils/translate");
 // Recieve all status active word for home screen
 exports.get_active_words = asyncHandler(async (req, res, next) => {
     try {
+        const userId = req.session.user_id;
+        const user = await User.findById(userId);
         var words = await Word.find({ is_active: true });
-        res.render("home", { words: words });
+        res.render("home", { words: words, user: user });
     } catch (e) {
         console.log("An error occured during loading home page!", e);
         return next(e);
