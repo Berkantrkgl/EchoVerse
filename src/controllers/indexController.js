@@ -4,13 +4,33 @@ const asyncHandler = require("express-async-handler");
 
 // For using google translate api
 const { translateText, detectLanguage } = require("../utils/translate");
+const session = require("express-session");
 
 // Recieve all status active word for home screen
 exports.get_active_words = asyncHandler(async (req, res, next) => {
     try {
         const userId = req.session.user_id;
         const user = await User.findById(userId);
-        var words = await Word.find({ is_active: true });
+
+
+        var words = await User.findById(userId) // Kullanıcı ID'sine göre ara
+        .populate({
+            path: 'words', // 'words' dizisini doldur
+            match: { is_active: true }, // Yalnızca 'is_active' özelliği 'true' olanları eşleştir
+        })
+        .then(user => {
+            if (!user) {
+                console.log('User not found');
+                return [];
+            }
+            return user.words; // Aktif kelimelerin listesini döndür
+        })
+        .catch(err => {
+            console.error('Error during finding words:', err);
+            return [];
+        });
+
+        console.log(words)
         res.render("home", { words: words, user: user });
     } catch (e) {
         console.log("An error occured during loading home page!", e);
@@ -21,44 +41,60 @@ exports.get_active_words = asyncHandler(async (req, res, next) => {
 // Create word and save with meaning in other language (tr <==> en)
 exports.create_word = asyncHandler(async (req, res, next) => {
     try {
+        // Check permission like this for now 
+        if (!req.session.user_id) {
+            console.log("Lutfen giris yapiniz!")
+            return res.redirect('/users/login');
+        }
         const language_type = await detectLanguage(req.body.word);
-        console.log(language_type);
+
+        const user = await User.findById(req.session.user_id).populate('words');
+
+     
         if (language_type === "tr") {
-            var en_answer = await translateText(req.body.word, "en");
-            let word = await Word.findOneAndUpdate(
-                { tr_word: req.body.word },
-                { is_active: true, question_language: "tr" }
-            );
-            if (word === null) {
-                var new_word = new Word({
+            const existingWord = user.words.find(w => w.tr_word === req.body.word);
+            const en_answer = await translateText(req.body.word, "en");
+
+            if (existingWord) {
+                // Kelime zaten var, güncelle
+                existingWord.is_active = true;
+                existingWord.question_language = "tr";
+                await existingWord.save();
+            } else {
+                // Kelime yok, yeni kelime oluştur
+                const newWord = new Word({
                     tr_word: req.body.word,
                     en_word: en_answer,
                     question_language: "tr",
+                    is_active: true
                 });
-                await new_word.save();
-                console.log(
-                    "Turkce girilen kelime kaydedildi (ingilizce ile beraber!"
-                );
+                await newWord.save();
+                user.words.push(newWord);
+                await user.save();
             }
         } else if (language_type === "en") {
-            var tr_answer = await translateText(req.body.word, "tr");
-            let word = await Word.findOneAndUpdate(
-                { en_word: req.body.word },
-                { is_active: true, question_language: "en" }
-            );
-            if (word === null) {
-                var new_word = new Word({
-                    en_word: req.body.word,
+            const existingWord = user.words.find(w => w.en_word === req.body.word);
+            const tr_answer = await translateText(req.body.word, "tr");
+
+            if (existingWord) {
+                // Kelime zaten var, güncelle
+                existingWord.is_active = true;
+                existingWord.question_language = "en";
+                await existingWord.save();
+            } else {
+                // Kelime yok, yeni kelime oluştur
+                const newWord = new Word({
                     tr_word: tr_answer,
+                    en_word: req.body.word,
                     question_language: "en",
+                    is_active: true
                 });
-                await new_word.save();
-                console.log(
-                    "Ingilizce girilen kelime karsiligiyla birlikte kaydedildi!"
-                );
+                await newWord.save();
+                user.words.push(newWord);
+                await user.save();
             }
         } else {
-            console.log("Lutfen turkce ya da ingilizce bir kelime giriniz!");
+            console.log("Lütfen Türkçe ya da İngilizce bir kelime giriniz!");
         }
         res.redirect("/");
     } catch (e) {
@@ -70,6 +106,11 @@ exports.create_word = asyncHandler(async (req, res, next) => {
 // Check the word, if entered meaning is correct return active from true to false
 exports.check_word = asyncHandler(async (req, res, next) => {
     try {
+        // Check permission like this for now 
+        if (!req.session.user_id) {
+            console.log("Lutfen giris yapiniz!")
+            return res.redirect('/users/login');
+        }
         const response = req.body.check_word;
         const word = await Word.findById(req.params.wordId);
 
@@ -102,6 +143,11 @@ exports.check_word = asyncHandler(async (req, res, next) => {
 
 exports.delete_word = asyncHandler(async (req, res, next) => {
     try {
+        // Check permission like this for now 
+        if (!req.session.user_id) {
+            console.log("Lutfen giris yapiniz!")
+            return res.redirect('/users/login');
+        }
         const word = await Word.findById(req.params.wordId);
         word.is_active = false;
         await word.save();

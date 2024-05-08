@@ -9,7 +9,7 @@ var userSchema = Schema({
     last_name: { type: String, required: true },
     e_mail: { type: String, required: true },
     password: { type: String, required: true },
-    words: [{ type: Schema.Types.ObjectId, ref: "Word" }],
+    words: [{ type: mongoose.Schema.Types.ObjectId, ref: "Word" }],
 });
 
 var User = mongoose.model("User", userSchema);

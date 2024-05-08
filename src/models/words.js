@@ -8,7 +8,6 @@ var wordSchema = new Schema({
     question_language: { type: String, default: "en" },
     is_active: { type: Boolean, default: true },
     number_of_seen: { type: Number, default: 0 },
-    users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 });
 
 var Word = mongoose.model("Word", wordSchema);
