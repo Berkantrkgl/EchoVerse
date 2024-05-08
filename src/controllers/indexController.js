@@ -1,5 +1,5 @@
 const Word = require("../models/words");
-const User = require('../models/users');
+const User = require("../models/users");
 const asyncHandler = require("express-async-handler");
 
 // For using google translate api
@@ -12,25 +12,22 @@ exports.get_active_words = asyncHandler(async (req, res, next) => {
         const userId = req.session.user_id;
         const user = await User.findById(userId);
 
-
         var words = await User.findById(userId) // Kullanıcı ID'sine göre ara
-        .populate({
-            path: 'words', // 'words' dizisini doldur
-            match: { is_active: true }, // Yalnızca 'is_active' özelliği 'true' olanları eşleştir
-        })
-        .then(user => {
-            if (!user) {
-                console.log('User not found');
+            .populate({
+                path: "words", // 'words' dizisini doldur
+                match: { is_active: true }, // Yalnızca 'is_active' özelliği 'true' olanları eşleştir
+            })
+            .then((user) => {
+                if (!user) {
+                    console.log("User not found");
+                    return [];
+                }
+                return user.words; // Aktif kelimelerin listesini döndür
+            })
+            .catch((err) => {
+                console.error("Error during finding words:", err);
                 return [];
-            }
-            return user.words; // Aktif kelimelerin listesini döndür
-        })
-        .catch(err => {
-            console.error('Error during finding words:', err);
-            return [];
-        });
-
-        console.log(words)
+            });
         res.render("home", { words: words, user: user });
     } catch (e) {
         console.log("An error occured during loading home page!", e);
@@ -41,18 +38,19 @@ exports.get_active_words = asyncHandler(async (req, res, next) => {
 // Create word and save with meaning in other language (tr <==> en)
 exports.create_word = asyncHandler(async (req, res, next) => {
     try {
-        // Check permission like this for now 
+        // Check permission like this for now
         if (!req.session.user_id) {
-            console.log("Lutfen giris yapiniz!")
-            return res.redirect('/users/login');
+            console.log("Lutfen giris yapiniz!");
+            return res.redirect("/users/login");
         }
         const language_type = await detectLanguage(req.body.word);
 
-        const user = await User.findById(req.session.user_id).populate('words');
+        const user = await User.findById(req.session.user_id).populate("words");
 
-     
         if (language_type === "tr") {
-            const existingWord = user.words.find(w => w.tr_word === req.body.word);
+            const existingWord = user.words.find(
+                (w) => w.tr_word === req.body.word
+            );
             const en_answer = await translateText(req.body.word, "en");
 
             if (existingWord) {
@@ -66,14 +64,16 @@ exports.create_word = asyncHandler(async (req, res, next) => {
                     tr_word: req.body.word,
                     en_word: en_answer,
                     question_language: "tr",
-                    is_active: true
+                    is_active: true,
                 });
                 await newWord.save();
                 user.words.push(newWord);
                 await user.save();
             }
         } else if (language_type === "en") {
-            const existingWord = user.words.find(w => w.en_word === req.body.word);
+            const existingWord = user.words.find(
+                (w) => w.en_word === req.body.word
+            );
             const tr_answer = await translateText(req.body.word, "tr");
 
             if (existingWord) {
@@ -87,7 +87,7 @@ exports.create_word = asyncHandler(async (req, res, next) => {
                     tr_word: tr_answer,
                     en_word: req.body.word,
                     question_language: "en",
-                    is_active: true
+                    is_active: true,
                 });
                 await newWord.save();
                 user.words.push(newWord);
@@ -96,6 +96,7 @@ exports.create_word = asyncHandler(async (req, res, next) => {
         } else {
             console.log("Lütfen Türkçe ya da İngilizce bir kelime giriniz!");
         }
+        req.flash("success", "Successully created a new word!");
         res.redirect("/");
     } catch (e) {
         console.log("An error occured during creating new word!", e);
@@ -106,10 +107,10 @@ exports.create_word = asyncHandler(async (req, res, next) => {
 // Check the word, if entered meaning is correct return active from true to false
 exports.check_word = asyncHandler(async (req, res, next) => {
     try {
-        // Check permission like this for now 
+        // Check permission like this for now
         if (!req.session.user_id) {
-            console.log("Lutfen giris yapiniz!")
-            return res.redirect('/users/login');
+            console.log("Lutfen giris yapiniz!");
+            return res.redirect("/users/login");
         }
         const response = req.body.check_word;
         const word = await Word.findById(req.params.wordId);
@@ -118,7 +119,7 @@ exports.check_word = asyncHandler(async (req, res, next) => {
             word.is_active = false;
             word.number_of_seen += 1;
             await word.save();
-            console.log("Ingilizce kelimenin turkce karsiligi dogru bilindi!");
+            req.flash("success", "The word was known correctly");
             res.redirect("/");
         } else if (
             word.question_language === "tr" &&
@@ -127,12 +128,13 @@ exports.check_word = asyncHandler(async (req, res, next) => {
             word.is_active = false;
             word.number_of_seen += 1;
             await word.save();
-            console.log("Turkce kelimenin ingilizce karsiligi dogru bilindi!");
+            req.flash("success", "The word was known correctly");
             res.redirect("/");
         } else {
             console.log(
                 `yanlis cevap! Dogrusu : ${word.en_word} = ${word.tr_word}`
             );
+            req.flash("error", "The meaning of the word is wrong");
             res.redirect("/");
         }
     } catch (e) {
@@ -143,10 +145,10 @@ exports.check_word = asyncHandler(async (req, res, next) => {
 
 exports.delete_word = asyncHandler(async (req, res, next) => {
     try {
-        // Check permission like this for now 
+        // Check permission like this for now
         if (!req.session.user_id) {
-            console.log("Lutfen giris yapiniz!")
-            return res.redirect('/users/login');
+            console.log("Lutfen giris yapiniz!");
+            return res.redirect("/users/login");
         }
         const word = await Word.findById(req.params.wordId);
         word.is_active = false;

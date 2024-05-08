@@ -18,6 +18,11 @@ const sessionOptions = {
     secret: "thisisnotgoodsecret",
     resave: false,
     saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+    },
 };
 
 app.use(session(sessionOptions));
@@ -28,6 +33,12 @@ const port = 3000;
 
 // Database connection
 models.connectToDatabase();
+
+app.use((req, res, next) => {
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    next();
+});
 
 // Server side configurations
 app.use(express.urlencoded({ extended: true }));
@@ -41,12 +52,6 @@ app.use("/", indexRouter);
 app.use("/words", wordRouter);
 app.use("/practice", practiceRouter);
 app.use("/users", userRouter);
-
-// Flash middleware
-app.use((req, res, next) => {
-    res.locals.message = req.flash("success");
-    next();
-});
 
 // Running the server
 app.listen(port, () => {

@@ -1,0 +1,26 @@
+
+    <% if (success && success.length) { %>
+        <div class="container mt-3 fixed-top w-100" style="padding-top: 60px;">
+            <div class="d-flex alert alert-success offset-4 text-center col-lg-4  fade show" role="alert">
+                <div class="col-lg-11">
+                    <%= success %>                
+                </div>
+                <div class="col-lg-1">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    <% } %>
+
+<% if (error && error.length) { %>
+    <div class="container mt-3 fixed-top w-100" style="padding-top: 60px;">
+        <div class="d-flex alert alert-danger offset-4 text-center col-lg-4  fade show" role="alert">
+            <div class="col-lg-11">
+                <%= error %>
+            </div>
+            <div class="col-lg-1">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+    <% } %>

@@ -1,6 +1,6 @@
 const User = require("../models/users");
 const asyncHandler = require("express-async-handler");
-const bcrypt = require('bcryptjs');
+const bcrypt = require("bcryptjs");
 
 const hashpassword = async (pw) => {
     const salt = await bcrypt.genSalt(12);
@@ -15,12 +15,14 @@ exports.login_user = asyncHandler(async (req, res, next) => {
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (isPasswordValid) {
             req.session.user_id = user._id;
+            req.flash("success", "Login successful");
             res.redirect("/");
         } else {
             res.redirect("/users/login");
-        }  
+        }
     } catch (e) {
-        return next(e);
+        req.flash("error", "Login failed!");
+        res.redirect("/users/login");
     }
 });
 
@@ -33,16 +35,19 @@ exports.register_user = asyncHandler(async (req, res, next) => {
             last_name: lastName,
             e_mail: email,
             password: hashed_password,
-        })
+        });
         await user.save();
-        res.redirect('/')
+        req.session.user_id = user._id;
+        req.flash("success", "Register successful");
+        res.redirect("/");
     } catch (e) {
-        res.redirect('/users/register')
+        req.flash("error", "Register failed!");
+        res.redirect("/users/register");
         return next(e);
-    } 
-})
+    }
+});
 
 exports.logout_user = asyncHandler(async (req, res, next) => {
     req.session.destroy();
-    res.redirect('/users/login')
-})
+    res.redirect("/users/login");
+});
