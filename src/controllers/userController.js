@@ -15,7 +15,6 @@ exports.login_user = asyncHandler(async (req, res, next) => {
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (isPasswordValid) {
             req.session.user_id = user._id;
-            req.flash("success", "Login successful");
             res.redirect("/");
         } else {
             res.redirect("/users/login");
@@ -38,7 +37,6 @@ exports.register_user = asyncHandler(async (req, res, next) => {
         });
         await user.save();
         req.session.user_id = user._id;
-        req.flash("success", "Register successful");
         res.redirect("/");
     } catch (e) {
         req.flash("error", "Register failed!");
